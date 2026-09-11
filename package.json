@@ -1,0 +1,32 @@
+{
+  "name": "qa-automation-saucedemo-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end test automation for SauceDemo using Playwright and TypeScript",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:chromium": "playwright test --project=chromium",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:negative": "playwright test --grep @negative",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "test-automation",
+    "end-to-end-testing",
+    "saucedemo"
+  ],
+  "license": "ISC",
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.2",
+    "dotenv": "^17.4.2"
+  }
+}
