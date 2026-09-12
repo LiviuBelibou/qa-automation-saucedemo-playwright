@@ -11,6 +11,9 @@
     "test:chromium": "playwright test --project=chromium",
     "test:smoke": "playwright test --grep @smoke",
     "test:negative": "playwright test --grep @negative",
+    "test:regression": "playwright test --grep @regression",
+    "test:e2e": "playwright test --grep @e2e",
+    "test:accessibility": "playwright test --grep @accessibility",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -31,6 +34,7 @@
     "node": ">=22"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@types/node": "^24.13.4",
