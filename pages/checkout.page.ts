@@ -35,9 +35,7 @@ export class CheckoutPage {
     this.completeHeader = page.getByTestId('complete-header');
   }
 
-  async enterCustomerInformation(
-    customer: CustomerInformation,
-  ): Promise<void> {
+  async enterCustomerInformation(customer: CustomerInformation): Promise<void> {
     await this.firstNameInput.fill(customer.firstName);
     await this.lastNameInput.fill(customer.lastName);
     await this.postalCodeInput.fill(customer.postalCode);

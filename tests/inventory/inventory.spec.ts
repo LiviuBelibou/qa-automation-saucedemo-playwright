@@ -8,10 +8,7 @@ test.describe('Inventory', () => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
-    await loginPage.login(
-      users.standard.username,
-      users.standard.password,
-    );
+    await loginPage.login(users.standard.username, users.standard.password);
 
     await expect(page).toHaveURL(/\/inventory\.html$/);
   });

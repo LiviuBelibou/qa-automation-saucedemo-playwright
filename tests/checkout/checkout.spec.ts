@@ -15,10 +15,7 @@ test.describe('Checkout', () => {
     const cartPage = new CartPage(page);
 
     await loginPage.goto();
-    await loginPage.login(
-      users.standard.username,
-      users.standard.password,
-    );
+    await loginPage.login(users.standard.username, users.standard.password);
     await inventoryPage.addProductToCart(productName);
     await inventoryPage.openCart();
     await cartPage.proceedToCheckout();
@@ -32,9 +29,7 @@ test.describe('Checkout', () => {
     async ({ page }) => {
       const checkoutPage = new CheckoutPage(page);
 
-      await checkoutPage.enterCustomerInformation(
-        checkoutData.validCustomer,
-      );
+      await checkoutPage.enterCustomerInformation(checkoutData.validCustomer);
       await checkoutPage.continueCheckout();
 
       await expect(page).toHaveURL(/\/checkout-step-two\.html$/);
@@ -53,22 +48,18 @@ test.describe('Checkout', () => {
     },
   );
 
-  test(
-    'postal code is required',
-    { tag: '@negative' },
-    async ({ page }) => {
-      const checkoutPage = new CheckoutPage(page);
+  test('postal code is required', { tag: '@negative' }, async ({ page }) => {
+    const checkoutPage = new CheckoutPage(page);
 
-      await checkoutPage.enterCustomerInformation({
-        ...checkoutData.validCustomer,
-        postalCode: '',
-      });
-      await checkoutPage.continueCheckout();
+    await checkoutPage.enterCustomerInformation({
+      ...checkoutData.validCustomer,
+      postalCode: '',
+    });
+    await checkoutPage.continueCheckout();
 
-      await expect(checkoutPage.errorMessage).toHaveText(
-        'Error: Postal Code is required',
-      );
-      await expect(page).toHaveURL(/\/checkout-step-one\.html$/);
-    },
-  );
+    await expect(checkoutPage.errorMessage).toHaveText(
+      'Error: Postal Code is required',
+    );
+    await expect(page).toHaveURL(/\/checkout-step-one\.html$/);
+  });
 });
