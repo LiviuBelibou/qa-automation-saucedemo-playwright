@@ -1,31 +1,53 @@
 name: Playwright Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   BASE_URL: https://www.saucedemo.com
   SAUCEDEMO_USERNAME: standard_user
   SAUCEDEMO_PASSWORD: secret_sauce
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+
 jobs:
   test:
+    name: Quality checks and Playwright tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
-          node-version: lts/*
+          node-version: 24
+          cache: npm
+
       - name: Install dependencies
         run: npm ci
-      - name: Install Playwright Browsers
+
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Run quality checks and Playwright tests
-        run:  npx playwrinpm run checkght test
-      - uses: actions/upload-artifact@v4
+
+      - name: Run quality gate
+        run: npm run check
+
+      - name: Upload Playwright report
         if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+          if-no-files-found: ignore
