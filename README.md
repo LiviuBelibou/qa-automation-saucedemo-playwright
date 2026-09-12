@@ -48,6 +48,8 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 ├── .github/
 │   └── workflows/
 │       └── playwright.yml
+├── fixtures/
+│   └── test.fixture.ts
 ├── pages/
 │   ├── cart.page.ts
 │   ├── checkout.page.ts
@@ -55,6 +57,7 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 │   └── login.page.ts
 ├── test-data/
 │   ├── checkout-data.ts
+│   ├── products.ts
 │   └── users.ts
 ├── tests/
 │   ├── cart/
@@ -77,8 +80,9 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 ### Responsibilities
 
 - `tests/` contains business-focused test scenarios organized by feature.
+- `fixtures/` creates Page Objects and provides reusable authenticated test setup.
 - `pages/` contains selectors and reusable browser actions.
-- `test-data/` contains reusable users and form data.
+- `test-data/` contains reusable users, products, and checkout information.
 - `playwright.config.ts` controls browsers, timeouts, retries, reporting, and
   environment configuration.
 - `.github/workflows/playwright.yml` runs the complete quality gate in CI.
@@ -262,6 +266,12 @@ files. This avoids duplication and makes switching environments easier.
 
 Selectors and browser actions are stored in Page Objects. Tests describe
 business behaviour without repeating element-handling code.
+
+### Reusable fixtures
+
+Custom Playwright fixtures create the Page Objects centrally. Tests that require
+an authenticated user reuse the same login setup instead of repeating it in
+every test file.
 
 ### Stable locators
 

@@ -12,6 +12,7 @@
     "types": ["node", "@playwright/test"]
   },
   "include": [
+    "fixtures/**/*.ts",
     "pages/**/*.ts",
     "test-data/**/*.ts",
     "tests/**/*.ts",
