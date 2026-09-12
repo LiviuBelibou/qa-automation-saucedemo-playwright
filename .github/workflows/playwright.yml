@@ -20,7 +20,7 @@ env:
 
 jobs:
   test:
-    name: Quality checks and Playwright tests
+    name: test
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
