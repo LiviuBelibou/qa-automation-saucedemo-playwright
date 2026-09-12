@@ -12,10 +12,7 @@ test.describe('Shopping cart', () => {
     const inventoryPage = new InventoryPage(page);
 
     await loginPage.goto();
-    await loginPage.login(
-      users.standard.username,
-      users.standard.password,
-    );
+    await loginPage.login(users.standard.username, users.standard.password);
     await inventoryPage.addProductToCart(productName);
     await inventoryPage.openCart();
 

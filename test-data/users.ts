@@ -8,9 +8,7 @@ function requiredEnvironmentVariable(name: string): string {
   return value;
 }
 
-const sauceDemoPassword = requiredEnvironmentVariable(
-  'SAUCEDEMO_PASSWORD',
-);
+const sauceDemoPassword = requiredEnvironmentVariable('SAUCEDEMO_PASSWORD');
 
 export const users = {
   standard: {

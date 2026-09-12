@@ -12,10 +12,7 @@ test.describe('Login', () => {
       const inventoryPage = new InventoryPage(page);
 
       await loginPage.goto();
-      await loginPage.login(
-        users.standard.username,
-        users.standard.password,
-      );
+      await loginPage.login(users.standard.username, users.standard.password);
 
       await expect(page).toHaveURL(/\/inventory\.html$/);
       await expect(inventoryPage.title).toHaveText('Products');
@@ -30,10 +27,7 @@ test.describe('Login', () => {
       const loginPage = new LoginPage(page);
 
       await loginPage.goto();
-      await loginPage.login(
-        users.lockedOut.username,
-        users.lockedOut.password,
-      );
+      await loginPage.login(users.lockedOut.username, users.lockedOut.password);
 
       await expect(loginPage.errorMessage).toHaveText(
         'Epic sadface: Sorry, this user has been locked out.',

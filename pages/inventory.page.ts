@@ -38,9 +38,7 @@ export class InventoryPage {
   async getProductPrices(): Promise<number[]> {
     const priceTexts = await this.productPrices.allTextContents();
 
-    return priceTexts.map((price) =>
-      Number.parseFloat(price.replace('$', '')),
-    );
+    return priceTexts.map((price) => Number.parseFloat(price.replace('$', '')));
   }
 
   async openCart(): Promise<void> {
