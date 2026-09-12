@@ -1,24 +1,13 @@
-import { expect, test } from '@playwright/test';
-import { InventoryPage } from '../../pages/inventory.page';
-import { LoginPage } from '../../pages/login.page';
-import { users } from '../../test-data/users';
+import { expect, test } from '../../fixtures/test.fixture';
+import { inventoryProductCount, products } from '../../test-data/products';
 
 test.describe('Inventory', () => {
-  test.beforeEach(async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.goto();
-    await loginPage.login(users.standard.username, users.standard.password);
-
-    await expect(page).toHaveURL(/\/inventory\.html$/);
-  });
-
   test(
     'user can add a product to the cart',
     { tag: '@smoke' },
-    async ({ page }) => {
-      const inventoryPage = new InventoryPage(page);
-      const productName = 'Sauce Labs Backpack';
+    async ({ authenticatedApp }) => {
+      const { inventoryPage } = authenticatedApp;
+      const productName = products.backpack.name;
 
       await inventoryPage.addProductToCart(productName);
 
@@ -34,16 +23,23 @@ test.describe('Inventory', () => {
   test(
     'user can sort products by price from low to high',
     { tag: '@regression' },
-    async ({ page }) => {
-      const inventoryPage = new InventoryPage(page);
+    async ({ authenticatedApp }) => {
+      const { inventoryPage } = authenticatedApp;
+
+      await expect(inventoryPage.productPrices).toHaveCount(
+        inventoryProductCount,
+      );
 
       await inventoryPage.sortProductsBy('lohi');
+
+      await expect(inventoryPage.sortDropdown).toHaveValue('lohi');
 
       const actualPrices = await inventoryPage.getProductPrices();
       const expectedPrices = [...actualPrices].sort(
         (first, second) => first - second,
       );
 
+      expect(actualPrices).toHaveLength(inventoryProductCount);
       expect(actualPrices).toEqual(expectedPrices);
     },
   );
