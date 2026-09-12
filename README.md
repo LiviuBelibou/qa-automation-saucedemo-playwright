@@ -6,36 +6,40 @@ End-to-end UI automation framework for
 [SauceDemo](https://www.saucedemo.com), built with Playwright and TypeScript.
 
 The project demonstrates maintainable test design, reusable Page Objects,
-centralized test data, cross-browser execution, automated quality checks, and
-continuous integration with GitHub Actions.
+centralized test data, accessibility checks, cross-browser execution, automated
+code-quality checks, and continuous integration with GitHub Actions.
 
 ## Test coverage
 
-The framework contains eight independent scenarios:
+The framework contains ten independent scenarios:
 
-| Feature   | Scenario                           | Classification    |
-| --------- | ---------------------------------- | ----------------- |
-| Login     | Standard user can log in           | Smoke             |
-| Login     | Locked-out user cannot log in      | Negative          |
-| Inventory | User can add a product to the cart | Smoke             |
-| Inventory | Products can be sorted by price    | Regression        |
-| Cart      | Added product appears in the cart  | Smoke             |
-| Cart      | User can remove a product          | Regression        |
-| Checkout  | User can complete an order         | Smoke, end-to-end |
-| Checkout  | Postal code is required            | Negative          |
+| Feature       | Scenario                                         | Classification    |
+| ------------- | ------------------------------------------------ | ----------------- |
+| Login         | Standard user can log in                         | Smoke             |
+| Login         | Locked-out user cannot log in                    | Negative          |
+| Inventory     | User can add a product to the cart               | Smoke             |
+| Inventory     | Products can be sorted by price                  | Regression        |
+| Cart          | Added product appears in the cart                | Smoke             |
+| Cart          | User can remove a product                        | Regression        |
+| Checkout      | User can complete an order                       | Smoke, end-to-end |
+| Checkout      | Postal code is required                          | Negative          |
+| Accessibility | Login page has no serious or critical violations | Accessibility     |
+| Accessibility | Inventory page has no serious or critical issues | Accessibility     |
 
 Each scenario runs against Chromium, Firefox, and WebKit:
 
 ```text
-8 scenarios × 3 browser engines = 24 test executions
+10 scenarios × 3 browser engines = 30 test executions
 ```
 
 ## Technology
 
 - TypeScript
 - Playwright Test
+- Axe Core for Playwright
 - Node.js and npm
 - Page Object Model
+- Custom Playwright fixtures
 - dotenv
 - ESLint
 - Prettier
@@ -60,6 +64,8 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 │   ├── products.ts
 │   └── users.ts
 ├── tests/
+│   ├── accessibility/
+│   │   └── accessibility.spec.ts
 │   ├── cart/
 │   │   └── cart.spec.ts
 │   ├── checkout/
@@ -79,7 +85,8 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 
 ### Responsibilities
 
-- `tests/` contains business-focused test scenarios organized by feature.
+- `tests/` contains business-focused and accessibility test scenarios organized
+  by feature.
 - `fixtures/` creates Page Objects and provides reusable authenticated test setup.
 - `pages/` contains selectors and reusable browser actions.
 - `test-data/` contains reusable users, products, and checkout information.
@@ -164,6 +171,24 @@ Run negative tests:
 npm run test:negative
 ```
 
+Run regression tests:
+
+```bash
+npm run test:regression
+```
+
+Run the complete end-to-end journey:
+
+```bash
+npm run test:e2e
+```
+
+Run accessibility tests:
+
+```bash
+npm run test:accessibility
+```
+
 Run tests with visible browsers:
 
 ```bash
@@ -190,12 +215,16 @@ Tests are classified using tags:
 - `@negative` verifies rejected actions and validation.
 - `@regression` verifies broader application behaviour.
 - `@e2e` identifies a complete user journey.
+- `@accessibility` identifies automated WCAG accessibility scans.
 
-Run a tag directly with:
+Run any tag directly with:
 
 ```bash
+npx playwright test --grep @smoke
+npx playwright test --grep @negative
 npx playwright test --grep @regression
 npx playwright test --grep @e2e
+npx playwright test --grep @accessibility
 ```
 
 ## Code-quality commands
@@ -251,6 +280,7 @@ When a test fails, the framework can retain:
 - A video
 - A Playwright trace
 - The HTML test report
+- Detailed Axe accessibility scan results
 
 Generated results are stored locally in `test-results/` and
 `playwright-report/`. These folders are excluded from Git.
@@ -262,6 +292,12 @@ Generated results are stored locally in `test-results/` and
 The base URL and environment-specific credentials are stored outside the test
 files. This avoids duplication and makes switching environments easier.
 
+### Centralized test data
+
+User credentials, product information, expected prices, inventory expectations,
+and checkout data are stored separately from the test scenarios. This reduces
+duplication and provides a single place to update expected data.
+
 ### Page Object Model
 
 Selectors and browser actions are stored in Page Objects. Tests describe
@@ -272,6 +308,12 @@ business behaviour without repeating element-handling code.
 Custom Playwright fixtures create the Page Objects centrally. Tests that require
 an authenticated user reuse the same login setup instead of repeating it in
 every test file.
+
+### Strong business assertions
+
+Tests verify more than page navigation and element visibility. The checkout
+journey confirms the selected product, expected price, subtotal, tax, and final
+total calculation.
 
 ### Stable locators
 
@@ -287,6 +329,15 @@ running first.
 
 Playwright assertions automatically wait for the expected condition, reducing
 the need for hard-coded delays.
+
+### Accessibility testing
+
+Axe Core scans the login and inventory pages against WCAG 2.0 and WCAG 2.1
+Level A and AA rules. The automated quality gate fails when serious or critical
+violations are detected.
+
+Complete accessibility testing also requires manual evaluation with keyboards,
+screen readers, zoom, and other assistive technologies.
 
 ### Cross-browser execution
 
@@ -307,12 +358,15 @@ Playwright reports are uploaded as workflow artifacts for later investigation.
 
 ## Scope
 
-This repository focuses on UI end-to-end automation for a public demonstration
-application.
+This repository focuses on UI end-to-end and automated accessibility testing for
+a public demonstration application.
 
 API tests are not included because the project does not rely on a documented
 public SauceDemo API. Unsupported endpoints should not be invented merely to
 claim API coverage.
+
+Automated accessibility scans can identify many technical violations but do not
+replace a complete manual accessibility audit.
 
 WebKit coverage is useful for browser-engine compatibility but does not replace
 testing on every real Safari and Apple device configuration.
