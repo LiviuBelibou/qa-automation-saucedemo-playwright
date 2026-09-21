@@ -1,0 +1,127 @@
+name: Bug report
+description: Report an application issue, automation defect, or test execution problem.
+title: '[Bug]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one problem per report. Search existing issues first and add new evidence to a matching issue.
+        A failed test needs investigation before it can be classified as an application bug.
+        See the [bug reporting guide](https://github.com/LiviuBelibou/qa-automation-saucedemo-playwright/blob/main/docs/bug-reporting.md) for collecting evidence.
+        This repository is public: remove private credentials, tokens, and personal data from attachments.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Suspected area
+      description: Choose Needs investigation if the cause is not yet clear.
+      options:
+        - Needs investigation
+        - SauceDemo application
+        - Automation test or Page Object
+        - CI, configuration, or environment
+        - Accessibility
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: affected-scenario
+    attributes:
+      label: Affected test or screen
+      description: Include the test file and full test title for an automated failure.
+      placeholder: tests/login/login.spec.ts - standard user can log in successfully @smoke
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and version
+      description: Include the target URL, OS, browser engine/version, local or CI execution, test-repository commit, and account type. Do not include passwords.
+      placeholder: |
+        Target URL:
+        OS:
+        Browser engine and version:
+        Local or CI:
+        Test-repository commit:
+        Playwright / Node.js versions:
+        Account type or demo username:
+        Application build (if known):
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Preconditions and steps to reproduce
+      description: Include necessary data, numbered actions, and the exact test command when relevant.
+      placeholder: |
+        Preconditions:
+        1.
+        2.
+        3.
+        Test command:
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: Describe the expected behaviour and the requirement or other basis for it.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Describe what happened, including the relevant assertion or error message.
+    validations:
+      required: true
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Reproduction frequency
+      options:
+        - Observed once; not yet rerun
+        - Every attempt
+        - Intermittent
+        - Could not reproduce on rerun
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Proposed severity
+      description: Severity describes impact. Fix priority is decided during triage.
+      options:
+        - Needs assessment
+        - Critical - widespread outage, data loss, or sensitive data exposure
+        - High - an important workflow is blocked without a workaround
+        - Medium - functionality is affected but a workaround exists
+        - Low - a minor issue with limited user impact
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and workaround
+      description: Explain who is affected, what they cannot do, and any workaround. Use this to support the proposed severity.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and CI run
+      description: Attach relevant screenshots or a reviewed trace ZIP, paste a short log excerpt, or link the Actions run and identify the failing test. A local file path alone cannot be opened by other people.
+      placeholder: |
+        Actions run URL (if applicable):
+        Artifact name and failing test:
+        Screenshots / trace / video / Axe results:
+        Relevant log excerpt:
+    validations:
+      required: false
+  - type: textarea
+    id: investigation
+    attributes:
+      label: Investigation notes
+      description: Record rerun results, whether it reproduces manually, related issues, and any suspected cause. Separate observations from assumptions.
+    validations:
+      required: false

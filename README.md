@@ -93,6 +93,8 @@ Each scenario runs against Chromium, Firefox, and WebKit:
 - `playwright.config.ts` controls browsers, timeouts, retries, reporting, and
   environment configuration.
 - `.github/workflows/playwright.yml` runs the complete quality gate in CI.
+- `.github/ISSUE_TEMPLATE/bug-report.yml` defines the structured GitHub bug form.
+- `docs/bug-reporting.md` explains investigation, evidence collection, and triage.
 
 ## Prerequisites
 
@@ -284,6 +286,19 @@ When a test fails, the framework can retain:
 
 Generated results are stored locally in `test-results/` and
 `playwright-report/`. These folders are excluded from Git.
+
+Traces are recorded for every attempt and retained on failure, including the
+initial attempt. This also provides traces for local failures with no retries.
+
+## Bug reporting
+
+Use [New bug report](https://github.com/LiviuBelibou/qa-automation-saucedemo-playwright/issues/new?template=bug-report.yml)
+to record reproduction steps, expected and actual behaviour, environment,
+severity, impact, and supporting evidence.
+
+Follow the [bug reporting guide](docs/bug-reporting.md) to investigate failures and
+collect local or CI evidence. Reports are submitted manually after investigation;
+use Needs investigation when the cause is still unclear.
 
 ## Design decisions
 
